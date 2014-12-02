@@ -4,3 +4,15 @@ www/
 # cordova
 platforms/
 plugins/
+
+# node
+node_modules/
+
+# bower
+bower_components/
+
+# Zed
+.zedstate
+
+# IntelliJ
+.idea/

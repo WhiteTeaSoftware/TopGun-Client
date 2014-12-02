@@ -1,0 +1,8 @@
+{
+  "name": "TopGun-Client",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "ionic": "~0.9.27"
+  }
+}
