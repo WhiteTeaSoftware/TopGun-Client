@@ -24,12 +24,15 @@ module.exports = (grunt) ->
                     'www/app.css': 'src/styles/app.styl'
                 options:
                     paths: ['bower_components', 'node_modules', 'src/styles']
-                    'include css': true
+                    'include css': yes
                     
         jade:
             compile:
-                files:
-                    'www/index.html': 'src/templates/index.jade'
+                cwd: 'src/templates'
+                src: ['**/*.jade']
+                dest: 'www'
+                ext: '.html'
+                expand: yes
                     
         clean: ['www']
         

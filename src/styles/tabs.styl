@@ -1,0 +1,26 @@
+favColors = {
+    '1': #ff8c00,
+    '2': #ff0000,
+    '3': #6600ff,
+    '4': #00cc66,
+    '5': #996633
+}
+
+.fav-tab
+    padding 10px
+    border-radius 2px
+    height 50px
+    width 30px
+    padding-bottom 17px
+    color white
+    
+.fav-message
+    border-left-style solid
+    border-left-width 10px
+    
+for tabNo, tabColor in favColors
+    .fav-tab-{tabNo} 
+        background tabColor
+        
+    .fav-message-{tabNo}
+        border-left-color tabColor
