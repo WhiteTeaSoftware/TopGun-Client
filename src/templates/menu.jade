@@ -1,0 +1,14 @@
+ion-side-menus
+    ion-side-menu-content(drag-content='false')
+        ion-nav-bar.'bar-royal'/
+        ion-nav-view(name='menuContent' animation='slide-left-right')/
+        
+    ion-side-menu(side='left')
+        header.bar.bar-header.bar-royal
+            h1.title Menu
+        
+        ion-content.has-header(scroll='false')
+            ion-list
+                ion-item.item.item-icon-left(nav-dark menu-close href='#/app/home')
+                    i.icon.ion-chatbubbles Home
+        

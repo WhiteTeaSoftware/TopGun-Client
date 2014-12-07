@@ -13,14 +13,22 @@ favColors = {
     width 30px
     padding-bottom 17px
     color white
-    
+
 .fav-message
     border-left-style solid
     border-left-width 10px
-    
+
+.fav-wrapper
+    z-index 40
+    position absolute
+    right -0px
+
 for tabNo, tabColor in favColors
-    .fav-tab-{tabNo} 
+    .fav-tab-{tabNo}
         background tabColor
-        
+
     .fav-message-{tabNo}
         border-left-color tabColor
+
+    .fav-wrapper-{tabNo}
+        top (20 + (60 * tabNo)px

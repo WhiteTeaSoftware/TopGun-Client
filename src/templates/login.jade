@@ -1,0 +1,11 @@
+ion-view#background(title='Login')
+    ion-content.padding(scroll='false')
+        .col
+            img.full-img.login-picture(src='img/logo.svg' width='100')
+            form(ng-submit='login()')
+                label.item.item-assertive(ng-show='loginForm.error')
+                    p.help-block.login-help-block
+                        i.icon.ion-alert-circled Username or Password is Invalid!
+                label.item.item-assertive(ng-show='loginForm.connError')
+                    p.help-block.login-help-block
+                        i.icon.ion-alert-circled Connection Error...

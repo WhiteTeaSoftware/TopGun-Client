@@ -1,18 +1,11 @@
 findNew = (newMessages, currentMessages) ->
     message for message in newMessages when message in currentMessages
 
-hostUrl = 'http://localhost:3000'
+
 
 angular.module 'TGClient.controllers', ['ionic']
 
-.constant 'LOGIN_URL', "#{hostUrl}/login"
-.constant 'LOGOUT_URL', "#{hostUrl}/logout"
-.constant 'REGISTER_URL', "#{hostUrl}/createUser"
-.constant 'POST_MESSAGE_URL', "#{hostUrl}/postMessage"
-.constant 'GET_MESSAGE_URL', "#{hostUrl}/getMessage"
-.constant 'GET_MESSAGES_URL', "#{hostUrl}/getMessages"
-
-.controller 'AppCtrl', ($scope) -> ()
+.controller 'AppCtrl', ($scope) -> undefined
 
 .controller 'HomeCtrl', ($scope, $ionicPopup, $interval, MessagingService, LoginService, $state) ->
     $scope.data =
@@ -25,7 +18,7 @@ angular.module 'TGClient.controllers', ['ionic']
         $scope.messages = data
 
     $scope.isFavorite = (id) ->
-        id in favorite?.id for favorite in $scope.favorites
+        id in (favorite?.id for favorite in $scope.favorites)
 
     $scope.favNum = (id) ->
         for favorite, i in $scope.favorites
@@ -38,17 +31,17 @@ angular.module 'TGClient.controllers', ['ionic']
             for favorite, i in $scope.favorites
                 if favorite.id is id
                     delete $scope.favorites[i]
-                    TGClient.updateFavorites $scope.favorites
+                    TG.updateFavorites $scope.favorites
 
         else
-            favorite, i in $scope.favorites
+            for favorite, i in $scope.favorites
                 if not favorite?
                     $scope.favorites[i] =
                         id: id
                         author: author
                         message: message
 
-                    TGClient.updateFavorites[i]
+                    TG.updateFavorites[i]
 
 
     $scope.postMessage = ->
@@ -70,7 +63,62 @@ angular.module 'TGClient.controllers', ['ionic']
                 $scope.messages = data
                 $scope.has_new_message = yes
 
-    $scope.gotoFav = (id) ->
-        $state.go 'app.favorite', id: id
+    $scope.gotoFav = (id) -> $state.go 'app.favorite', id: id
 
-    $scope.refreshInterval = $interva; $scope.refreshMessages, 4000
+    $scope.refreshInterval = $interval $scope.refreshMessages, 4000
+    
+.controller 'FavoriteCtrl', ($scope, LoginService, MessagingService, $stateParams, $state, $interval) ->
+    $scope.data = {}
+    $scope.responses = []
+    $scope.m_id = $stateParams.id
+    $scope.refreshInterval = undefined
+    
+    $scope.refreshMessage = ->
+        MessagingService.getMessage($scope.m_id).then (data) ->
+            $scope.data.thread_author = data.n
+            $scope.data.thread_message = data.v
+            $scope.responses = data.r
+            
+    $scope.refreshMessage()
+    
+    $scope.postMessage = ->
+        if $scope.data.new_message
+            MessagingService.postMessage $scope.data.new_message, $scope.m_id
+            $scope.data.new_message = ''
+            $scope.refreshMessage()
+            
+    $scope.logout = ->
+        LoginService.logout()
+        $interval.cancel $scope.refreshInterval
+        $scope.refreshInterval = undefined
+        $state.go 'login'
+        
+    $scope.gotoMain = -> $state.go 'app.home'
+        
+    $scope.itemHeight = -> 30
+    
+.controller 'LoginCtrl', ($scope, LoginService, $ionicPopup, $ionicModal) ->
+    $scope.loginData = {}
+    $scope.resisterData = {}
+    $scope.loginForm = error: no, connError: no
+
+    $ionicModal.fromTemplateUrl('templates/register.html', {scope: $scope})
+    .then (modal) ->
+        $scope.modal = modal
+        
+    $scope.register = ->
+        $ionicPopup.show
+            templateUrl: 'templates/register.html'
+            title: '<h2><i class="ion-person-add"></i></h2>'
+            scope: $scope
+            buttons: [
+                {
+                    text: '<b><i class="ion-close"</i></b>'
+                    type: 'button-outline button-stable'
+                },{
+                    text: 'Resister'
+                    type: 'button-outline button-royal'
+                    onTap: (e) ->
+                        LoginService.createUser $scope.resisterData.username, $scope.registerData.password, $scope.resisterData.email
+                }
+            ]

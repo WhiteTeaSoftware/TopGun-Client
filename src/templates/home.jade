@@ -1,0 +1,20 @@
+ion-view(title='Home')
+    ion-nav-buttons(side='left')
+        button.button.button-icon.icon.ion-navicon(menu-toggle='left')/
+    ion-nav-buttons(side='right')
+        button.button.button-icon.icon.ion-log-out(ng-click='logout()')/
+        
+    each val in [1, 2, 3, 4, 5]
+        .fav-wrapper(class="fav-wrapper-#{val}" ng-show="favorites#{val - 1}" on-tap="gotoFav(favorites[#{val - 1}].id)")
+            .fav-tab(class="fav-tab-#{val}")
+                
+    ion-content.has-header(scrollbar-y='false')
+        ion-list.list-inset
+            ion-item(ng-class='favNum(message._id)' ng-repeat='message in messages' on-hold='addToFavorite(message._id, message.n, message.v)' on-tap='gotoFav(message._id)')
+                h2 {{ message.n }}
+                p {{ message.v }}
+        
+    ion-footer-bar.bar-dark
+        label.item-input.message-send-footer
+            input.message-send-input(ng-model='data.new_message' type='text' placeholder="Type message...")
+        a.button.button-icon.icon.ion-ios7-paperplane(ng-click="postMessage()")
