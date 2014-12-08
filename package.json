@@ -1,24 +1,27 @@
 {
-  "name": "TopGun-Client",
-  "author": "Ryan Delaney",
-  "version": "0.0.1",
-  "description": "Frontend for TopGun mobile app",
-  "private": true,
-  "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-coffeelint": "~0.0.13",
-    "grunt-contrib-clean": "~0.6.0",
-    "grunt-contrib-jade": "~0.13.0",
-    "grunt-contrib-stylus": "~0.20.0",
-    "grunt-contrib-uglify": "0.6.0",
-    "grunt-contrib-copy": "0.7.0",
-    "grunt-browserify": "~3.2.1",
-    "coffeeify": "1.0.0",
-    "debowerify": "1.1.0",
-    "browserify-plain-jade": "0.2.2",
-    "grunt-cordovacli": "0.5.1"
-  },
-  "dependencies": {
-    "cordova": "^4.1.2"
-  }
+    "name": "TopGun-Client",
+    "author": "Ryan Delaney",
+    "version": "0.0.1",
+    "description": "Frontend for TopGun mobile app",
+    "private": true,
+    "devDependencies": {
+        "grunt": "~0.4.5",
+        "grunt-coffeelint": "~0.0.13",
+        "grunt-contrib-clean": "~0.6.0",
+        "grunt-contrib-jade": "~0.13.0",
+        "grunt-contrib-stylus": "~0.20.0",
+        "grunt-contrib-uglify": "0.6.0",
+        "grunt-contrib-copy": "0.7.0",
+        "grunt-browserify": "~3.2.1",
+        "coffeeify": "1.0.0",
+        "debowerify": "1.1.0",
+        "browserify-plain-jade": "0.2.2",
+        "grunt-cordovacli": "0.5.1"
+    },
+    "dependencies": {
+        "cordova": "^4.1.2"
+    },
+    "scripts": {
+        "start": "ionic serve"
+    }
 }

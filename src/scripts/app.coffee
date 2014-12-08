@@ -5,8 +5,6 @@ require 'angular-sanitize'
 require 'angular-ui-router'
 require 'ionic/release/js/ionic-angular.js'
 
-moment = require 'moment'
-
 window.app = angular.module 'TGClient', ['ionic', 'TGClient.controllers', 'TGClient.services']
 
 .run ($rootScope, $state, $ionicPlatform, $window) ->

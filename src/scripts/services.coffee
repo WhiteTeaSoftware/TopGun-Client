@@ -1,4 +1,6 @@
-hostUrl = 'http://localhost:3000'
+moment = require 'moment'
+
+hostUrl = 'http://localhost:80'
 
 angular.module 'TGClient.services', ['ionic']
 
@@ -27,7 +29,7 @@ angular.module 'TGClient.services', ['ionic']
         CreateUserURL: "#{hostUrl}/createUser"
         PostMessageURL: "#{hostUrl}/postMessage"
         GetMessageURL: "#{hostUrl}/getMessage"
-        GetMessagesURL: "#{hostUrl}/get. /Messages"
+        GetMessagesURL: "#{hostUrl}/getMessages"
 
 .factory 'MessagingService', ($q, $http, $ionicPopup, $filter, TG) ->
     MessagingService =
@@ -73,7 +75,7 @@ angular.module 'TGClient.services', ['ionic']
                 .error ->
                     dataPromise.reject()
 
-            dataPromise
+            dataPromise.promise
 
 .factory 'LoginService', ($q, $http, $state, $ionicLoading, TG) ->
     commitLogout = ->
@@ -101,7 +103,7 @@ angular.module 'TGClient.services', ['ionic']
                 data: JSON.stringify u: username, p: password
                 headers: 'Content-Type': 'application/json'
             .success (data) ->
-                loginPromsie.resolve()
+                loginPromise.resolve()
                 TG.setSecurityToken data.t
                 TG.setLoginType 'n'
                 $state.go 'app.home'
@@ -112,5 +114,5 @@ angular.module 'TGClient.services', ['ionic']
             $http
                 url: TG.CreateUserURL
                 method: 'POST'
-                data: JSON.stringify u: username, p: passowrd , e: email
+                data: JSON.stringify u: username, p: password , e: email
                 headers: 'Content-Type': 'application/json'

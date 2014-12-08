@@ -5,12 +5,12 @@ angular.module 'TGClient.controllers', ['ionic']
 
 .controller 'AppCtrl', ($scope) -> undefined
 
-.controller 'HomeCtrl', ($scope, $ionicPopup, $interval, MessagingService, LoginService, $state) ->
+.controller 'HomeCtrl', ($scope, $ionicPopup, $interval, MessagingService, LoginService, TG, $state) ->
     $scope.data =
         has_new_message: no
     $scope.messages = []
     $scope.refreshInterval = undefined
-    $scope.favorites = TGClient.getFavorites()
+    $scope.favorites = TG.getFavorites()
 
     MessagingService.getMessages().then (data) ->
         $scope.messages = data
@@ -114,7 +114,7 @@ angular.module 'TGClient.controllers', ['ionic']
                     text: 'Register'
                     type: 'button-outline button-royal'
                     onTap: (e) ->
-                        LoginService.createUser $scope.resisterData.username, $scope.registerData.password, $scope.resisterData.email
+                        LoginService.createUser $scope.registerData.username, $scope.registerData.password, $scope.registerData.email
                 }
             ]
 
@@ -122,5 +122,5 @@ angular.module 'TGClient.controllers', ['ionic']
         LoginService.login $scope.loginData.username, $scope.loginData.password
         .then (success) ->
             $scope.loginForm.error = no
-        , (error) ->
+        ,(error) ->
             $scope.loginForm.error = yes
