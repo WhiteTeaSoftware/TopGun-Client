@@ -1,5 +1,3 @@
-moment = require 'moment/min/moment.min.js'
-
 hostUrl = 'http://localhost:3000'
 
 angular.module 'TGClient.services', ['ionic']
@@ -8,14 +6,14 @@ angular.module 'TGClient.services', ['ionic']
     @securityToken = null
     @loginType = null
     @favorites = new Array(5)
-    
+
     getCurrentLocation = ->
         deferred = $q.defer()
         navigator.geolocation.getCurrentPosition (pos) ->
             deferred.resolve lat: pos.coords.latitude, long: pos.coords.longitude
-            
+
         deferred.promise
-        
+
     TG =
         updateFavorites: (f) => @favorites = f
         getFavorites: => @favorites
@@ -47,7 +45,7 @@ angular.module 'TGClient.services', ['ionic']
                         method: 'POST'
                         data: JSON.stringify t: TG.getSecurityToken(), v: message, l: [data.long, data.lat]
                         headers: 'Content-Type': 'application/json'
-                        
+
         getMessage: ->
             dataPromise = $q.defer()
             $http
@@ -59,9 +57,9 @@ angular.module 'TGClient.services', ['ionic']
                 dataPromise.resolve data
             .error ->
                 dataPromise.reject()
-                
+
             dataPromise
-            
+
         getMessages: ->
             dataPromise = $q.defer()
             TG.getLatLong().then (data) ->
@@ -74,14 +72,14 @@ angular.module 'TGClient.services', ['ionic']
                     dataPromise.resolve data
                 .error ->
                     dataPromise.reject()
-                    
+
             dataPromise
-            
+
 .factory 'LoginService', ($q, $http, $state, $ionicLoading, TG) ->
     commitLogout = ->
         TG.setSecurityToken ''
         TG.setLoginType ''
-    
+
     LoginService =
         logout: ->
             $http
@@ -93,10 +91,10 @@ angular.module 'TGClient.services', ['ionic']
                 commitLogout()
             .error ->
                 commitLogout()
-                
+
         login: (username, password) ->
             loginPromise = $q.defer()
-            
+
             $http
                 url: TG.LoginURL
                 method: 'POST'
@@ -109,7 +107,7 @@ angular.module 'TGClient.services', ['ionic']
                 $state.go 'app.home'
             .error ->
                 loginPromise.reject()
-                
+
         createUser: (username, password, email) ->
             $http
                 url: TG.CreateUserURL

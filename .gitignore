@@ -16,3 +16,6 @@ bower_components/
 
 # IntelliJ
 .idea/
+
+# Ionic
+ionic.project

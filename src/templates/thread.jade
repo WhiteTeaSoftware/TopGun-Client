@@ -1,0 +1,22 @@
+ion-view(title='Thread')
+    ion-nav-buttons(side='left')
+        button.button.button-icon.icon.ion-navicon(menu-toggle='left')
+    ion-nav-buttons(side='right')
+        button.button.button-icon.icon.ion-log-out(ng-click='logout()')
+        
+    ion-content.has-header(on-swipe-right='gotoMain()' scrollbar-y='false')
+        .list.card
+            .item
+                h2(ng-bind-html='data.thread_author')
+            .item.item-body
+                p(ng-bind-html='data.thread_message')
+                
+        ol.messages(ng-repeat='response in responses')
+            li
+                .response-info - {{ response.n }}
+                p {{ response.v }}
+                    
+    ion-footer-bar.bar-dark
+        label.item-input.message-send-footer
+            input.message-send-input(ng-model='data.new_message' type='text' placeholder="Type response...")
+        a.button.button-icon.icon.ion-ios7-paperplane(ng-click="postMessage()")

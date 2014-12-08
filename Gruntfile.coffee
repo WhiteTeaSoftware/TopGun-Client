@@ -6,7 +6,7 @@ module.exports = (grunt) ->
                 files:
                     'www/app.js': ['src/scripts/*.coffee']
                 options:
-                    transform: ['coffeeify', 'debowerify', 'jadeify']
+                    transform: ['coffeeify', 'debowerify', 'browserify-plain-jade']
 
         coffeelint:
             app: ['src/scripts/**/*.coffee']
@@ -35,19 +35,52 @@ module.exports = (grunt) ->
             options:
                 mangle:
                     false
-            my_target:
+            target:
                 files:
                     'www/app.js': ['www/app.js']
 
-        clean: ['www']
+        cordovacli:
+            options:
+                path: 'www'
+            add_plugins:
+                options:
+                    command: 'plugin'
+                    action: 'add'
+                    plugins: [
+                        'device'
+                        'geolocation'
+                        'inappbrowser'
+                        'com.ionic.keyboard'
+                    ]
+
+        copy:
+            main:
+                files: [
+                    {
+                        expand: yes
+                        cwd: 'src/assets'
+                        src: ['**']
+                        dest: 'www/'
+                    },{
+                        expand: yes
+                        cwd: 'bower_components/ionic/release/fonts'
+                        src: ['*']
+                        dest: 'www/fonts/'
+                    }
+                ]
+
+        clean: ['www/*.*']
 
     grunt.loadNpmTasks 'grunt-coffeelint'
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-stylus'
     grunt.loadNpmTasks 'grunt-contrib-jade'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
+    grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-browserify'
+    grunt.loadNpmTasks 'grunt-cordovacli'
 
-    grunt.registerTask 'default', ['coffeelint', 'clean', 'browserify','uglify', 'stylus', 'jade']
+    grunt.registerTask 'default', ['coffeelint', 'clean', 'browserify', 'stylus', 'jade', 'uglify', 'copy', 'cordovacli']
+    grunt.registerTask 'build', ['clean', 'browserify', 'stylus', 'jade']
 
     return

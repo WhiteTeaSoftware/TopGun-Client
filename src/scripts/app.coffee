@@ -5,7 +5,9 @@ require 'angular-sanitize'
 require 'angular-ui-router'
 require 'ionic/release/js/ionic-angular.js'
 
-angular.module 'TGClient', ['ionic', 'TGClient.controllers', 'TGClient.services']
+moment = require 'moment'
+
+window.app = angular.module 'TGClient', ['ionic', 'TGClient.controllers', 'TGClient.services']
 
 .run ($rootScope, $state, $ionicPlatform, $window) ->
     $ionicPlatform.ready ->
@@ -13,31 +15,29 @@ angular.module 'TGClient', ['ionic', 'TGClient.controllers', 'TGClient.services'
         StatusBar.styleDefault() if window.StatusBar
 
 .config ($stateProvider, $urlRouterProvider) ->
-    $stateProvider
-
-    .state 'app',
-        url: 'app'
+    $stateProvider.state 'app',
+        url: '/app'
         abstract: yes
-        templateUrl: require '../templates/menu.jade'
+        template: require '../templates/menu.jade'
         controller: 'AppCtrl'
+
+    .state 'login',
+        url: '/login'
+        template: require '../templates/login.jade'
+        controller: 'LoginCtrl'
 
     .state 'app.home',
         url: '/home'
         views:
             menuContent:
-                templateUrl: require '../templates/home.jade'
+                template: require '../templates/home.jade'
                 controller: 'HomeCtrl'
 
-    .state 'app.login',
-        url: '/login'
-        templateUrl: require '../templates/login.jade'
-        controller: 'LoginCtrl'
-
-    .state 'app.favorite',
-        url: '/favorite/:id'
+    .state 'app.thread',
+        url: '/thread/:id'
         views:
             menuContent:
-                templateUrl: require '../templates/favorite.jade'
-                controller: 'FavoriteCtrl'
+                template: require '../templates/thread.jade'
+                controller: 'ThreadCtrl'
 
     $urlRouterProvider.otherwise '/login'
