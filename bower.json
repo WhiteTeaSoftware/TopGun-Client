@@ -1,17 +1,13 @@
 {
-    "name": "TopGun-Client",
-    "version": "0.0.1",
-    "private": true,
-    "dependencies": {
-        "ionic": "~1.0.0-beta.13",
-        "angular": "~1.3.5",
-        "angular-animate": "*",
-        "angular-sanitize": "*",
-        "angular-ui-router": "*",
-        "moment": "~2.8.4"
-    },
-    "resolutions": {
-        "angular": "~1.3.5",
-        "angular-ui-router": "~0.2.7"
-    }
+  "name": "TopGun-Client",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "ionic": "driftyco/ionic-bower#master",
+    "angular": "~1.3.6",
+    "angular-animate": "~1.3.6",
+    "angular-sanitize": "~1.3.6",
+    "angular-ui-router": "~0.2.10",
+    "moment": "~2.8.4"
+  }
 }

@@ -13,10 +13,10 @@ ion-view(title='Thread')
                 
         ol.messages(ng-repeat='response in responses')
             li
-                .response-info - {{ response.n }}
+                .response-info {{ response.n }}
                 p {{ response.v }}
                     
-    ion-footer-bar.bar-dark
+    .bar.bar-footer.bar-dark
         label.item-input.message-send-footer
             input.message-send-input(ng-model='data.new_message' type='text' placeholder="Type response...")
         a.button.button-icon.icon.ion-ios7-paperplane(ng-click="postMessage()")

@@ -3,7 +3,7 @@ require 'angular'
 require 'angular-animate'
 require 'angular-sanitize'
 require 'angular-ui-router'
-require 'ionic/release/js/ionic-angular.js'
+require 'ionic/js/ionic-angular.js'
 
 window.app = angular.module 'TGClient', ['ionic', 'TGClient.controllers', 'TGClient.services']
 

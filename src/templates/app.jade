@@ -10,4 +10,8 @@ html
         script(src='app.js')
         
     body(ng-app='TGClient')
+        each val in [1, 2, 3, 4, 5]
+            .fav-wrapper(class="fav-wrapper-#{val}" ng-model="favorites()[#{val - 1}]" on-tap='gotoFav(val)')
+                .fav-tab(class="fav-tab-#{val}")
+                    
         ion-nav-view

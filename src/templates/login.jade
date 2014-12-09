@@ -1,14 +1,14 @@
 ion-view#background(title='Login')
     ion-content.padding(scroll='false')
-        .col
+        .col.login
             img.full-img.login-picture(src='img/logo.jpg' width='300')
+            label.item.item-assertive.login-message(ng-show='loginForm.error')
+                p.help-block.login-help-block
+                    i.icon.ion-alert-circled Username or Password is Invalid!
+            label.item.item-assertive.login-message(ng-show='loginForm.connError')
+                p.help-block.login-help-block
+                    i.icon.ion-alert-circled Connection Error...
             form(ng-submit='doLogin()')
-                label.item.item-assertive(ng-show='loginForm.error')
-                    p.help-block.login-help-block
-                        i.icon.ion-alert-circled Username or Password is Invalid!
-                label.item.item-assertive(ng-show='loginForm.connError')
-                    p.help-block.login-help-block
-                        i.icon.ion-alert-circled Connection Error...
                 label.item.item-input
                     i.icon.ion-person.placeholder-icon
                     input(type='text' placeholder='Username' ng-model='loginData.username')

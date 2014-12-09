@@ -4,10 +4,9 @@ hostUrl = 'http://localhost:80'
 
 angular.module 'TGClient.services', ['ionic']
 
-.factory 'TG', ($q) ->
+.factory 'TG', ($q, $state) ->
     @securityToken = null
     @loginType = null
-    @favorites = new Array(5)
 
     getCurrentLocation = ->
         deferred = $q.defer()
@@ -17,19 +16,34 @@ angular.module 'TGClient.services', ['ionic']
         deferred.promise
 
     TG =
-        updateFavorites: (f) => @favorites = f
-        getFavorites: => @favorites
-        setLoginType: (t) => @loginType = t
-        getLoginType: => @loginType
-        setSecurityToken: (t) => @securityToken = t
-        getSecurityToken: => @securityToken
-        getLatLong: -> getCurrentLocation()
         LoginURL: "#{hostUrl}/login"
         LogoutURL: "#{hostUrl}/logout"
         CreateUserURL: "#{hostUrl}/createUser"
         PostMessageURL: "#{hostUrl}/postMessage"
         GetMessageURL: "#{hostUrl}/getMessage"
         GetMessagesURL: "#{hostUrl}/getMessages"
+        favorites: new Array(5)
+        setLoginType: (t) => @loginType = t
+        getLoginType: => @loginType
+        setSecurityToken: (t) => @securityToken = t
+        getSecurityToken: => @securityToken
+        getLatLong: -> getCurrentLocation()
+        gotoMessage: (id) -> $state.go 'app.thread', id: id
+        toggleFav: (id) ->
+            if (i = @favorites.indexOf id) isnt -1
+                console.log "Deleting #{i}"
+                delete @favorites[i]
+            else
+                for spot, i in @favorites
+                    if not spot?
+                        console.log "Setting #{i}"
+                        @favorites[i] = id
+                        return console.log @favorites
+
+                console.log "Set nothing..."
+
+        gotoFav: (num) ->
+            gotoMessage @favorites[num]
 
 .factory 'MessagingService', ($q, $http, $ionicPopup, $filter, TG) ->
     MessagingService =
@@ -48,7 +62,7 @@ angular.module 'TGClient.services', ['ionic']
                         data: JSON.stringify t: TG.getSecurityToken(), v: message, l: [data.long, data.lat]
                         headers: 'Content-Type': 'application/json'
 
-        getMessage: ->
+        getMessage: (id) ->
             dataPromise = $q.defer()
             $http
                 url: TG.GetMessageURL
@@ -60,7 +74,7 @@ angular.module 'TGClient.services', ['ionic']
             .error ->
                 dataPromise.reject()
 
-            dataPromise
+            dataPromise.promise
 
         getMessages: ->
             dataPromise = $q.defer()
@@ -79,6 +93,7 @@ angular.module 'TGClient.services', ['ionic']
 
 .factory 'LoginService', ($q, $http, $state, $ionicLoading, TG) ->
     commitLogout = ->
+        TG.updateFavorites undefined
         TG.setSecurityToken ''
         TG.setLoginType ''
 

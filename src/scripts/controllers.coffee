@@ -3,44 +3,26 @@ findNew = (newMessages, currentMessages) ->
 
 angular.module 'TGClient.controllers', ['ionic']
 
-.controller 'AppCtrl', ($scope) -> undefined
+.controller 'AppCtrl', ($scope, TG) ->
+    $scope.favorites = -> TG.favorites
+    $scope.gotoFav = TG.gotoFav
 
-.controller 'HomeCtrl', ($scope, $ionicPopup, $interval, MessagingService, LoginService, TG, $state) ->
-    $scope.data =
-        has_new_message: no
+.controller 'HomeCtrl', ($rootScope, $scope, $ionicPopup, $interval, $state, MessagingService, LoginService, TG) ->
+    $scope.data = {has_new_message: no}
     $scope.messages = []
     $scope.refreshInterval = undefined
-    $scope.favorites = TG.getFavorites()
+    $scope.gotoMessage = TG.gotoMessage
 
     MessagingService.getMessages().then (data) ->
         $scope.messages = data
 
-    $scope.isFavorite = (id) ->
-        id in (favorite?.id for favorite in $scope.favorites)
-
     $scope.favNum = (id) ->
-        for favorite, i in $scope.favorites
+        for favorite, i in TG.favorites
             "fav-message-#{i + 1}" if id is favorite?.id
 
         'fav-message-0'
 
-    $scope.addToFavorites = (id, author, message) ->
-        if $scope.isFavorite id
-            for favorite, i in $scope.favorites
-                if favorite.id is id
-                    delete $scope.favorites[i]
-                    TG.updateFavorites $scope.favorites
-
-        else
-            for favorite, i in $scope.favorites
-                if not favorite?
-                    $scope.favorites[i] =
-                        id: id
-                        author: author
-                        message: message
-
-                    TG.updateFavorites[i]
-
+    $scope.favoriteToggle = (id) -> TG.toggleFav id
 
     $scope.postMessage = ->
         if $scope.data.new_message
@@ -57,15 +39,11 @@ angular.module 'TGClient.controllers', ['ionic']
 
     $scope.refreshMessages = ->
         MessagingService.getMessages().then (data) ->
-            if (findNew data, $scope.messages).length > 0
-                $scope.messages = data
-                $scope.has_new_message = yes
-
-    $scope.gotoFav = (id) -> $state.go 'app.thread', id: id
+            $scope.messages = data
 
     $scope.refreshInterval = $interval $scope.refreshMessages, 4000
 
-.controller 'ThreadCtrl', ($scope, LoginService, MessagingService, $stateParams, $state, $interval) ->
+.controller 'ThreadCtrl', ($scope, LoginService, MessagingService, $stateParams, $state, $interval, TG) ->
     $scope.data = {}
     $scope.responses = []
     $scope.m_id = $stateParams.id

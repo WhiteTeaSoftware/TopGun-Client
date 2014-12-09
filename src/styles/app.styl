@@ -1,9 +1,9 @@
-@require 'ionic/release/css/ionic.css'
 @import url('http://fonts.googleapis.com/css?family=Ubuntu:900,600,500,300,700,400,800')
+@require 'ionic/css/ionic.css'
 
 @require 'favorites'
 
-allText = 'h1,h2,h3,h4,h5,h6,p,.h1,.h2,.h3,.h4,.h5,.h6,.item'
+allText = 'h1, h2, h3, h4, h5, h6, p, .h1, .h2, .h3, .h4, .h5, .h6, .item, .item-divider, button, input'
 
 #background
     background-color #909090
@@ -14,14 +14,18 @@ allText = 'h1,h2,h3,h4,h5,h6,p,.h1,.h2,.h3,.h4,.h5,.h6,.item'
     .message-send-input
         color #EBEBEB
 
-.login-picture
-    display block
-    margin-left auto
-    margin-right auto
-    padding 50px 0
+.login
+    .login-picture
+        display block
+        margin-left auto
+        margin-right auto
+        padding 50px 0
 
-.login-help-block
-    color white
+    .login-help-block
+        color white
+
+    .login-message
+        margin 20px 0
 
 .scroll
     height 100%
@@ -47,7 +51,7 @@ allText = 'h1,h2,h3,h4,h5,h6,p,.h1,.h2,.h3,.h4,.h5,.h6,.item'
         font-size .875rem
 
 .response-info
-    margin-left 1-px
+    padding-left .6875rem
     font-size 85%
     color #999999
 

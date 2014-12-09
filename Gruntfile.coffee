@@ -63,7 +63,7 @@ module.exports = (grunt) ->
                         dest: 'www/'
                     },{
                         expand: yes
-                        cwd: 'bower_components/ionic/release/fonts'
+                        cwd: 'bower_components/ionic/fonts'
                         src: ['*']
                         dest: 'www/fonts/'
                     }
