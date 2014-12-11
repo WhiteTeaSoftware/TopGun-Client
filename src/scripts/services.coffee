@@ -4,9 +4,11 @@ hostUrl = 'http://localhost:80'
 
 angular.module 'TGClient.services', ['ionic']
 
-.factory 'TG', ($q, $state) ->
+.factory 'TG', ($q, $state, $rootScope) ->
     @securityToken = null
     @loginType = null
+
+    $rootScope.favorites = [undefined, undefined, undefined, undefined, undefined]
 
     getCurrentLocation = ->
         deferred = $q.defer()
@@ -22,28 +24,22 @@ angular.module 'TGClient.services', ['ionic']
         PostMessageURL: "#{hostUrl}/postMessage"
         GetMessageURL: "#{hostUrl}/getMessage"
         GetMessagesURL: "#{hostUrl}/getMessages"
-        favorites: new Array(5)
         setLoginType: (t) => @loginType = t
         getLoginType: => @loginType
         setSecurityToken: (t) => @securityToken = t
         getSecurityToken: => @securityToken
         getLatLong: -> getCurrentLocation()
         gotoMessage: (id) -> $state.go 'app.thread', id: id
-        toggleFav: (id) ->
-            if (i = @favorites.indexOf id) isnt -1
-                console.log "Deleting #{i}"
-                delete @favorites[i]
+        favToggle: (id) ->
+            if (i = $rootScope.favorites.indexOf id) isnt -1
+                $rootScope.favorites[i] = undefined
+
             else
-                for spot, i in @favorites
+                for spot, i in $rootScope.favorites
                     if not spot?
-                        console.log "Setting #{i}"
-                        @favorites[i] = id
-                        return console.log @favorites
+                        return $rootScope.favorites[i] = id
 
-                console.log "Set nothing..."
-
-        gotoFav: (num) ->
-            gotoMessage @favorites[num]
+        favNum: (id) -> if (i = $rootScope.favorites.indexOf id) isnt -1 then i else undefined
 
 .factory 'MessagingService', ($q, $http, $ionicPopup, $filter, TG) ->
     MessagingService =

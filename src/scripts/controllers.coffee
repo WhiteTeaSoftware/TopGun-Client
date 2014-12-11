@@ -3,11 +3,10 @@ findNew = (newMessages, currentMessages) ->
 
 angular.module 'TGClient.controllers', ['ionic']
 
-.controller 'AppCtrl', ($scope, TG) ->
-    $scope.favorites = -> TG.favorites
-    $scope.gotoFav = TG.gotoFav
+.controller 'AppCtrl', ($rootScope, TG) ->
+    $rootScope.gotoFav = (id) -> TG.gotoMessage $rootScope.favorites[id]
 
-.controller 'HomeCtrl', ($rootScope, $scope, $ionicPopup, $interval, $state, MessagingService, LoginService, TG) ->
+.controller 'HomeCtrl', ($scope, $ionicPopup, $interval, $state, $controller, MessagingService, LoginService, TG) ->
     $scope.data = {has_new_message: no}
     $scope.messages = []
     $scope.refreshInterval = undefined
@@ -16,13 +15,9 @@ angular.module 'TGClient.controllers', ['ionic']
     MessagingService.getMessages().then (data) ->
         $scope.messages = data
 
-    $scope.favNum = (id) ->
-        for favorite, i in TG.favorites
-            "fav-message-#{i + 1}" if id is favorite?.id
+    $scope.favNum = (id) -> TG.favNum(id)
 
-        'fav-message-0'
-
-    $scope.favoriteToggle = (id) -> TG.toggleFav id
+    $scope.favoriteToggle = (id) -> TG.favToggle id
 
     $scope.postMessage = ->
         if $scope.data.new_message
@@ -39,6 +34,7 @@ angular.module 'TGClient.controllers', ['ionic']
 
     $scope.refreshMessages = ->
         MessagingService.getMessages().then (data) ->
+            delete $scope.messages
             $scope.messages = data
 
     $scope.refreshInterval = $interval $scope.refreshMessages, 4000
