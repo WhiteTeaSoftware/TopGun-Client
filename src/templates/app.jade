@@ -6,12 +6,12 @@ html
         title
         
         link(href='app.css' rel='stylesheet')
+        script(src='app.js')    
         script(src='cordova.js')
-        script(src='app.js')
         
     body(ng-app='TGClient')
-        each val in [1, 2, 3, 4, 5]
-            .fav-wrapper(class="fav-wrapper-#{val}" ng-show="favorites[#{val - 1}]" on-tap="gotoFav(#{val - 1})")
+        each val in [0, 1, 2, 3, 4]
+            .fav-wrapper(class="fav-wrapper-#{val}" ng-show="favorites[#{val}]" on-tap="gotoFav(#{val})")
                 .fav-tab(class="fav-tab-#{val}")
                     
         ion-nav-view

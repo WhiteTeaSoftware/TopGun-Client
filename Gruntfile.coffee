@@ -39,6 +39,11 @@ module.exports = (grunt) ->
                 files:
                     'www/app.js': ['www/app.js']
 
+        cssmin:
+            target:
+                files:
+                    'www/app.css': ['www/app.css']
+
         cordovacli:
             options:
                 path: 'www'
@@ -47,9 +52,9 @@ module.exports = (grunt) ->
                     command: 'plugin'
                     action: 'add'
                     plugins: [
-                        'device'
-                        'geolocation'
-                        'inappbrowser'
+                        'org.apache.cordova.device'
+                        'org.apache.cordova.geolocation'
+                        'org.apache.cordova.inappbrowser'
                         'com.ionic.keyboard'
                     ]
 
@@ -63,7 +68,7 @@ module.exports = (grunt) ->
                         dest: 'www/'
                     },{
                         expand: yes
-                        cwd: 'bower_components/ionic/fonts'
+                        cwd: 'bower_components/ionic/release/fonts'
                         src: ['*']
                         dest: 'www/fonts/'
                     }
@@ -77,10 +82,11 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-jade'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-copy'
+    grunt.loadNpmTasks 'grunt-contrib-cssmin'
     grunt.loadNpmTasks 'grunt-browserify'
     grunt.loadNpmTasks 'grunt-cordovacli'
 
-    grunt.registerTask 'default', ['coffeelint', 'clean', 'browserify', 'stylus', 'jade', 'uglify', 'copy', 'cordovacli']
+    grunt.registerTask 'default', ['coffeelint', 'clean', 'browserify', 'stylus', 'jade', 'uglify', 'cssmin', 'copy', 'cordovacli']
     grunt.registerTask 'build', ['clean', 'browserify', 'stylus', 'jade']
 
     return

@@ -1,6 +1,6 @@
 moment = require 'moment'
 
-hostUrl = 'http://localhost:80'
+hostUrl = 'localhost'
 
 angular.module 'TGClient.services', ['ionic']
 

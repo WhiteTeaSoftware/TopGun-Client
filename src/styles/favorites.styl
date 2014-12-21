@@ -1,9 +1,9 @@
 favColors = {
-    '1': #ff8c00,
-    '2': #ff0000,
-    '3': #6600ff,
-    '4': #00cc66,
-    '5': #996633
+    '0': #ff8c00,
+    '1': #ff0000,
+    '2': #6600ff,
+    '3': #00cc66,
+    '4': #996633
 }
 
 .fav-tab
@@ -31,4 +31,7 @@ for tabNo, tabColor in favColors
         border-left-color tabColor
 
     .fav-wrapper-{tabNo}
-        top (20 + (60 * tabNo))px
+        top (50 + (60 * tabNo))px
+
+.fav-message-undefined
+    border-left-color white

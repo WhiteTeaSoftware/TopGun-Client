@@ -1,14 +1,14 @@
-ion-view(title='Home')
+ion-view(view-title='Home')
     ion-nav-buttons(side='left')
         button.button.button-icon.icon.ion-navicon(menu-toggle='left')
     ion-nav-buttons(side='right')
         button.button.button-icon.icon.ion-log-out(ng-click='logout()')
                 
     ion-content.has-header(scrollbar-y='false')
-        ion-list
+        ion-list.messages
             ion-item(ng-class='favNum(message._id)' ng-repeat='message in messages' on-hold='favoriteToggle(message._id)' on-tap='gotoMessage(message._id)')
-                h2 {{ message.n }}
-                p {{ message.v }}
+                h3 {{ message.v }}
+                p {{ message.n }}
         
     .bar.bar-footer.bar-dark
         label.item-input.message-send-footer

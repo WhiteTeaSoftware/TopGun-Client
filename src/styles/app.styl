@@ -1,5 +1,12 @@
 @import url('http://fonts.googleapis.com/css?family=Ubuntu:900,600,500,300,700,400,800')
-@require 'ionic/css/ionic.css'
+@require 'ionic/release/css/ionic.css'
+
+@font-face
+    font-family Ionicons
+    src url('fonts/ionicons.eot')
+    src url('fonts/ionicons.svg')
+    src url('fonts/ionicons.ttf')
+    src url('fonts/ionicons.woff')
 
 @require 'favorites'
 
@@ -34,6 +41,10 @@ allText = 'h1, h2, h3, h4, h5, h6, p, .h1, .h2, .h3, .h4, .h5, .h6, .item, .item
     text-align center
 
 .messages
+    ion-item
+        border-left-width 7px
+
+.responses
     list-style-type none
 
     li

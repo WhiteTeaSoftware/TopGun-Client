@@ -6,7 +6,7 @@ angular.module 'TGClient.controllers', ['ionic']
 .controller 'AppCtrl', ($rootScope, TG) ->
     $rootScope.gotoFav = (id) -> TG.gotoMessage $rootScope.favorites[id]
 
-.controller 'HomeCtrl', ($scope, $ionicPopup, $interval, $state, $controller, MessagingService, LoginService, TG) ->
+.controller 'HomeCtrl', ($scope, $ionicPopup, $interval, $state, MessagingService, LoginService, TG) ->
     $scope.data = {has_new_message: no}
     $scope.messages = []
     $scope.refreshInterval = undefined
@@ -15,14 +15,14 @@ angular.module 'TGClient.controllers', ['ionic']
     MessagingService.getMessages().then (data) ->
         $scope.messages = data
 
-    $scope.favNum = (id) -> TG.favNum(id)
+    $scope.favNum = (id) -> "fav-message-#{TG.favNum(id)}"
 
     $scope.favoriteToggle = (id) -> TG.favToggle id
 
     $scope.postMessage = ->
         if $scope.data.new_message
             MessagingService.postMessage $scope.data.new_message
-            $scope.data.new_message = ''
+            $scope.data.new_message = false
             $scope.refreshMessages()
 
     $scope.logout = ->
@@ -37,9 +37,9 @@ angular.module 'TGClient.controllers', ['ionic']
             delete $scope.messages
             $scope.messages = data
 
-    $scope.refreshInterval = $interval $scope.refreshMessages, 4000
+    $scope.refreshMessages()
 
-.controller 'ThreadCtrl', ($scope, LoginService, MessagingService, $stateParams, $state, $interval, TG) ->
+.controller 'ThreadCtrl', ($scope, $interval, LoginService, MessagingService, $stateParams, TG) ->
     $scope.data = {}
     $scope.responses = []
     $scope.m_id = $stateParams.id
@@ -56,7 +56,7 @@ angular.module 'TGClient.controllers', ['ionic']
     $scope.postMessage = ->
         if $scope.data.new_message
             MessagingService.postMessage $scope.data.new_message, $scope.m_id
-            $scope.data.new_message = ''
+            $scope.data.new_message = false
             $scope.refreshMessage()
 
     $scope.logout = ->
@@ -66,8 +66,6 @@ angular.module 'TGClient.controllers', ['ionic']
         $state.go 'login'
 
     $scope.gotoMain = -> $state.go 'app.home'
-
-    $scope.itemHeight = -> 30
 
 .controller 'LoginCtrl', ($scope, LoginService, $ionicPopup, $ionicModal) ->
     $scope.loginData = {}
