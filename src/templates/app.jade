@@ -11,7 +11,7 @@ html
         
     body(ng-app='TGClient')
         each val in [0, 1, 2, 3, 4]
-            .fav-wrapper(class="fav-wrapper-#{val}" ng-show="favorites[#{val}]" on-tap="gotoFav(#{val})")
+            .fav-wrapper.ng-hide(class="fav-wrapper-#{val}" ng-show="favorites[#{val}]" ui-sref="app.thread({id: favorites[#{val}]})")
                 .fav-tab(class="fav-tab-#{val}")
                     
         ion-nav-view

@@ -1,12 +1,11 @@
 moment = require 'moment'
-
-hostUrl = 'localhost'
-
 angular.module 'TGClient.services', ['ionic']
 
 .factory 'TG', ($q, $state, $rootScope) ->
-    @securityToken = null
-    @loginType = null
+    @settings = require '../conf.cson'
+    @hostUrl = "http://#{@settings.TGServerUrl}"
+    @securityToken = undefined
+    @loginType = undefined
 
     $rootScope.favorites = [undefined, undefined, undefined, undefined, undefined]
 
@@ -18,18 +17,20 @@ angular.module 'TGClient.services', ['ionic']
         deferred.promise
 
     TG =
-        LoginURL: "#{hostUrl}/login"
-        LogoutURL: "#{hostUrl}/logout"
-        CreateUserURL: "#{hostUrl}/createUser"
-        PostMessageURL: "#{hostUrl}/postMessage"
-        GetMessageURL: "#{hostUrl}/getMessage"
-        GetMessagesURL: "#{hostUrl}/getMessages"
+        LoginURL: "#{@hostUrl}/login"
+        LogoutURL: "#{@hostUrl}/logout"
+        CreateUserURL: "#{@hostUrl}/createUser"
+        PostMessageURL: "#{@hostUrl}/postMessage"
+        GetMessageURL: "#{@hostUrl}/getMessage"
+        GetMessagesURL: "#{@hostUrl}/getMessages"
         setLoginType: (t) => @loginType = t
         getLoginType: => @loginType
         setSecurityToken: (t) => @securityToken = t
         getSecurityToken: => @securityToken
         getLatLong: -> getCurrentLocation()
         gotoMessage: (id) -> $state.go 'app.thread', id: id
+        favNum: (id) -> if (i = $rootScope.favorites.indexOf id) isnt -1 then i else undefined
+        favClear: -> $rootScope.favorites[i] = undefined for i in [0..4]
         favToggle: (id) ->
             if (i = $rootScope.favorites.indexOf id) isnt -1
                 $rootScope.favorites[i] = undefined
@@ -39,7 +40,7 @@ angular.module 'TGClient.services', ['ionic']
                     if not spot?
                         return $rootScope.favorites[i] = id
 
-        favNum: (id) -> if (i = $rootScope.favorites.indexOf id) isnt -1 then i else undefined
+
 
 .factory 'MessagingService', ($q, $http, $ionicPopup, $filter, TG) ->
     MessagingService =
@@ -89,9 +90,9 @@ angular.module 'TGClient.services', ['ionic']
 
 .factory 'LoginService', ($q, $http, $state, $ionicLoading, TG) ->
     commitLogout = ->
-        TG.updateFavorites undefined
-        TG.setSecurityToken ''
-        TG.setLoginType ''
+        TG.favClear()
+        TG.setSecurityToken undefined
+        TG.setLoginType undefined
 
     LoginService =
         logout: ->
@@ -114,16 +115,24 @@ angular.module 'TGClient.services', ['ionic']
                 data: JSON.stringify u: username, p: password
                 headers: 'Content-Type': 'application/json'
             .success (data) ->
-                loginPromise.resolve()
+                loginPromise.resolve data
                 TG.setSecurityToken data.t
                 TG.setLoginType 'n'
-                $state.go 'app.home'
             .error ->
                 loginPromise.reject()
 
+            loginPromise.promise
+
         createUser: (username, password, email) ->
+            userPromise = $q.defer()
             $http
                 url: TG.CreateUserURL
                 method: 'POST'
                 data: JSON.stringify u: username, p: password , e: email
                 headers: 'Content-Type': 'application/json'
+            .success (data) ->
+                userPromise.resolve data
+            .error ->
+                userPromise.reject()
+
+            userPromise.promise()

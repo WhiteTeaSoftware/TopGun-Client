@@ -1,15 +1,18 @@
-findNew = (newMessages, currentMessages) ->
-    message for message in newMessages when message in currentMessages
-
 angular.module 'TGClient.controllers', ['ionic']
 
-.controller 'AppCtrl', ($rootScope, TG) ->
-    $rootScope.gotoFav = (id) -> TG.gotoMessage $rootScope.favorites[id]
+.controller 'AppCtrl', ($scope, $state, TG) ->
+    if TG.getSecurityToken() is undefined then $state.go 'login'
 
-.controller 'HomeCtrl', ($scope, $ionicPopup, $interval, $state, MessagingService, LoginService, TG) ->
+    $scope.gotoFav = (id) -> TG.gotoMessage $rootScope.favorites[id]
+
+    $scope.logout = ->
+        LoginService.logout()
+        $state.go 'login'
+
+
+.controller 'HomeCtrl', ($scope, $ionicPopup, $state, MessagingService, LoginService, TG) ->
     $scope.data = {has_new_message: no}
     $scope.messages = []
-    $scope.refreshInterval = undefined
     $scope.gotoMessage = TG.gotoMessage
 
     MessagingService.getMessages().then (data) ->
@@ -25,17 +28,11 @@ angular.module 'TGClient.controllers', ['ionic']
             $scope.data.new_message = false
             $scope.refreshMessages()
 
-    $scope.logout = ->
-        LoginService.logout()
-        if angular.isDefined $scope.refreshInterval
-            $interval.cancel $scope.refreshInterval
-            $scope.refreshInterval = undefined
-        $state.go 'login'
-
     $scope.refreshMessages = ->
         MessagingService.getMessages().then (data) ->
             delete $scope.messages
             $scope.messages = data
+            $scope.$broadcast 'scroll.refreshComplete'
 
     $scope.refreshMessages()
 
@@ -43,15 +40,13 @@ angular.module 'TGClient.controllers', ['ionic']
     $scope.data = {}
     $scope.responses = []
     $scope.m_id = $stateParams.id
-    $scope.refreshInterval = undefined
 
     $scope.refreshMessage = ->
         MessagingService.getMessage($scope.m_id).then (data) ->
             $scope.data.thread_author = data.n
             $scope.data.thread_message = data.v
             $scope.responses = data.r
-
-    $scope.refreshMessage()
+            $scope.$broadcast 'scroll.refreshComplete'
 
     $scope.postMessage = ->
         if $scope.data.new_message
@@ -59,15 +54,9 @@ angular.module 'TGClient.controllers', ['ionic']
             $scope.data.new_message = false
             $scope.refreshMessage()
 
-    $scope.logout = ->
-        LoginService.logout()
-        $interval.cancel $scope.refreshInterval
-        $scope.refreshInterval = undefined
-        $state.go 'login'
+    $scope.refreshMessage()
 
-    $scope.gotoMain = -> $state.go 'app.home'
-
-.controller 'LoginCtrl', ($scope, LoginService, $ionicPopup, $ionicModal) ->
+.controller 'LoginCtrl', ($scope, LoginService, $ionicPopup, $ionicModal, $ionicHistory) ->
     $scope.loginData = {}
     $scope.registerData = {}
     $scope.loginForm = error: no, connError: no
@@ -80,7 +69,7 @@ angular.module 'TGClient.controllers', ['ionic']
             scope: $scope
             buttons: [
                 {
-                    text: '<b><i class="ion-close"></i></b>'
+                    text: '<i class="ion-close"></i>'
                     type: 'button-outline button-stable'
                 },{
                     text: 'Register'
@@ -94,5 +83,7 @@ angular.module 'TGClient.controllers', ['ionic']
         LoginService.login $scope.loginData.username, $scope.loginData.password
         .then (success) ->
             $scope.loginForm.error = no
+            $ionicHistory.goBack()
         ,(error) ->
             $scope.loginForm.error = yes
+            $ionicHistory.goBack()

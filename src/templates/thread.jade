@@ -1,9 +1,7 @@
 ion-view(view-title='Thread')
     ion-nav-buttons(side='left')
-        button.button.button-icon.icon.ion-chevron-left(ng-click='$ionicGoBack()')
-    ion-nav-buttons(side='right')
-        button.button.button-icon.icon.ion-log-out(ng-click='logout()')
-        
+        button.button.button-icon.icon.ion-chevron-left(ui-sref='app.home' nav-direction='back')
+
     ion-content.has-header(scrollbar-y='false')
         .list.card
             .item

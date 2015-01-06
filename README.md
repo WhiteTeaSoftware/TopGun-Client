@@ -49,3 +49,14 @@ To run TG, run
 or
 
     ionic serve
+
+# Deploying
+
+First, make sure you have everything you need to build an android app (ANT,
+Android SDK, etc) and then run
+
+    ionic platform android
+
+and then build with
+
+    ionic build

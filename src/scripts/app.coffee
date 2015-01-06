@@ -16,7 +16,7 @@ window.app = angular.module 'TGClient', ['ionic', 'TGClient.controllers', 'TGCli
     $stateProvider.state 'app',
         url: '/app'
         abstract: yes
-        template: require '../templates/menu.jade'
+        template: require '../templates/layout.jade'
         controller: 'AppCtrl'
 
     .state 'login',
@@ -27,15 +27,15 @@ window.app = angular.module 'TGClient', ['ionic', 'TGClient.controllers', 'TGCli
     .state 'app.home',
         url: '/home'
         views:
-            menuContent:
+            pageContent:
                 template: require '../templates/home.jade'
                 controller: 'HomeCtrl'
 
     .state 'app.thread',
         url: '/thread/:id'
         views:
-            menuContent:
+            pageContent:
                 template: require '../templates/thread.jade'
                 controller: 'ThreadCtrl'
 
-    $urlRouterProvider.otherwise '/login'
+    $urlRouterProvider.otherwise '/app/home'

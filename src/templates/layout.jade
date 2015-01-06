@@ -1,7 +1,7 @@
 ion-side-menus
     ion-side-menu-content(drag-content='false')
-        ion-nav-bar.bar-royal
-        ion-nav-view(name='menuContent' animation='slide-left-right')
+        ion-nav-bar.bar-royal(align-title='center')
+        ion-nav-view(name='pageContent' animation='slide-left-right')
         
     ion-side-menu(side='left')
         header.bar.bar-header.bar-royal
@@ -9,10 +9,10 @@ ion-side-menus
         
         ion-content.has-header(scroll='false')
             ion-list
-                ion-item.item.item-icon-left(nav-dark menu-close href='#/app/home')
+                ion-item.item.item-icon-left(nav-dark menu-close ui-sref='app.home')
                     i.icon.ion-chatbubbles 
                     h2 Home
-                ion-item.item.item-icon-left(nav-dark menu-close href='#/app/')
+                ion-item.item.item-icon-left(nav-dark menu-close ui-sref='app')
                     i.icon.ion-settings
                     h2 Settings
         

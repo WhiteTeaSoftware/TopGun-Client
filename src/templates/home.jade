@@ -1,16 +1,16 @@
 ion-view(view-title='Home')
     ion-nav-buttons(side='left')
         button.button.button-icon.icon.ion-navicon(menu-toggle='left')
-    ion-nav-buttons(side='right')
-        button.button.button-icon.icon.ion-log-out(ng-click='logout()')
                 
     ion-content.has-header(scrollbar-y='false')
+        ion-refresher(pulling-text="Pull to Refresh" on-refresh="refreshMessages()")
         ion-list.messages
             ion-item(ng-class='favNum(message._id)' ng-repeat='message in messages' on-hold='favoriteToggle(message._id)' on-tap='gotoMessage(message._id)')
                 h3 {{ message.v }}
                 p {{ message.n }}
+                img(ng-if="message.i")
         
     .bar.bar-footer.bar-dark
         label.item-input.message-send-footer
-            input.message-send-input(ng-model='data.new_message' type='text' placeholder="Type message...")
+            input.message-send-input(ng-model='data.new_message' type='text' placeholder="Type a message...")
         a.button.button-icon.icon.ion-ios7-paperplane(ng-click="postMessage()")

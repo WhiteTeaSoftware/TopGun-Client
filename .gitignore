@@ -20,3 +20,6 @@ bower_components/
 # Ionic
 ionic.project
 hooks/
+
+# Conf Settings
+src/conf.cson

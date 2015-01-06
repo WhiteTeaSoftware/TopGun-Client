@@ -6,7 +6,7 @@ module.exports = (grunt) ->
                 files:
                     'www/app.js': ['src/scripts/*.coffee']
                 options:
-                    transform: ['coffeeify', 'debowerify', 'browserify-plain-jade']
+                    transform: ['coffeeify', 'debowerify', 'browserify-data', 'browserify-plain-jade']
 
         coffeelint:
             app: ['src/scripts/**/*.coffee']
@@ -59,11 +59,11 @@ module.exports = (grunt) ->
                     ]
 
         copy:
-            main:
+            dist:
                 files: [
                     {
                         expand: yes
-                        cwd: 'src/assets'
+                        cwd: 'resources'
                         src: ['**']
                         dest: 'www/'
                     },{
@@ -86,7 +86,9 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-browserify'
     grunt.loadNpmTasks 'grunt-cordovacli'
 
-    grunt.registerTask 'default', ['coffeelint', 'clean', 'browserify', 'stylus', 'jade', 'uglify', 'cssmin', 'copy', 'cordovacli']
-    grunt.registerTask 'build', ['clean', 'browserify', 'stylus', 'jade']
+    grunt.registerTask 'build', ['coffeelint', 'clean', 'browserify', 'stylus', 'jade']
+    grunt.registerTask 'minify', ['uglify', 'cssmin']
+    grunt.registerTask 'dist', ['build', 'minify', 'copy']
+    grunt.registerTask 'default', ['build', 'minify', 'copy', 'cordovacli']
 
     return
