@@ -123,6 +123,24 @@ angular.module 'TGClient.services', ['ionic']
 
             loginPromise.promise
 
+        rLogin: ->
+            loginPromise = $q.defer()
+
+            $http
+                url: TG.LoginURL
+                method: 'POST'
+                data: JSON.stringify r: window.localStorage['rToken']
+                headers: 'Content-Type': 'application/json'
+            .success (data) ->
+                loginPromise.resolve data
+                window.localStorage['rToken'] = data.r
+                TG.setSecurityToken data.t
+                TG.setLoginType 'n'
+            .error ->
+                loginPromise.reject()
+
+            loginPromise.promise
+
         createUser: (username, password, email) ->
             userPromise = $q.defer()
             $http

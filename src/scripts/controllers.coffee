@@ -1,14 +1,13 @@
 angular.module 'TGClient.controllers', ['ionic']
 
 .controller 'AppCtrl', ($scope, $state, TG) ->
-    if TG.getSecurityToken() is undefined then $state.go 'login'
-
     $scope.gotoFav = (id) -> TG.gotoMessage $rootScope.favorites[id]
 
     $scope.logout = ->
         LoginService.logout()
         $state.go 'login'
 
+    if TG.getSecurityToken() is undefined then $state.go 'login'
 
 .controller 'HomeCtrl', ($scope, $ionicPopup, $state, MessagingService, LoginService, TG) ->
     $scope.data = {has_new_message: no}
@@ -87,3 +86,7 @@ angular.module 'TGClient.controllers', ['ionic']
         ,(error) ->
             $scope.loginForm.error = yes
             $ionicHistory.goBack()
+
+    if window.localStorage['rToken']
+        r = LoginService.rLogin()
+        if r then $ionicHistory.goBack()
