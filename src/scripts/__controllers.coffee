@@ -24,7 +24,7 @@ angular.module 'TGClient.controllers', ['ionic']
     $scope.postMessage = ->
         if $scope.data.new_message
             MessagingService.postMessage $scope.data.new_message
-            $scope.data.new_message = false
+            $scope.data.new_message = ''
             $scope.refreshMessages()
 
     $scope.refreshMessages = ->
@@ -85,7 +85,6 @@ angular.module 'TGClient.controllers', ['ionic']
             $ionicHistory.goBack()
         ,(error) ->
             $scope.loginForm.error = yes
-            $ionicHistory.goBack()
 
     if window.localStorage['rToken']
         r = LoginService.rLogin()

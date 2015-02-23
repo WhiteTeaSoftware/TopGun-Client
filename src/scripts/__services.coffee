@@ -2,7 +2,9 @@ moment = require 'moment'
 angular.module 'TGClient.services', ['ionic']
 
 .factory 'TG', ($q, $state, $rootScope) ->
-    @settings = require '../conf.cson'
+    @settings =
+        TGServerUrl: process.env.TG_SERVER__URL ? 'localhost'
+
     @hostUrl = "http://#{@settings.TGServerUrl}"
     @securityToken = undefined
     @loginType = undefined

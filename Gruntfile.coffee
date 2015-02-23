@@ -4,12 +4,14 @@ module.exports = (grunt) ->
         browserify:
             dist:
                 files:
-                    'www/app.js': ['src/scripts/*.coffee']
+                    'www/app.js': ['src/scripts/app.coffee']
                 options:
-                    transform: ['coffeeify', 'debowerify', 'browserify-data', 'browserify-plain-jade']
+                    transform: ['coffeeify', 'debowerify', 'browserify-plain-jade']
+                    browserifyOptions:
+                        extensions: ['.coffee']
 
         coffeelint:
-            app: ['src/scripts/**/*.coffee']
+            dist: ['src/scripts/**/*.coffee']
             options:
                 'max_line_length':
                     'level': 'ignore'
@@ -19,7 +21,7 @@ module.exports = (grunt) ->
                     'level': 'ignore'
 
         stylus:
-            compile:
+            dist:
                 files:
                     'www/app.css': 'src/styles/app.styl'
                 options:
@@ -27,27 +29,26 @@ module.exports = (grunt) ->
                     'include css': yes
 
         jade:
-            compile:
+            dist:
                 files:
                     'www/index.html': 'src/templates/app.jade'
 
         uglify:
-            options:
-                mangle:
-                    false
-            target:
+            dist:
                 files:
                     'www/app.js': ['www/app.js']
+                options:
+                    mangle: no
 
         cssmin:
-            target:
+            dist:
                 files:
                     'www/app.css': ['www/app.css']
 
         cordovacli:
             options:
                 path: 'www'
-            add_plugins:
+            dist:
                 options:
                     command: 'plugin'
                     action: 'add'
@@ -74,7 +75,8 @@ module.exports = (grunt) ->
                     }
                 ]
 
-        clean: ['www/*.*']
+        clean:
+            dist: ['www/*.*']
 
     grunt.loadNpmTasks 'grunt-coffeelint'
     grunt.loadNpmTasks 'grunt-contrib-clean'
@@ -86,7 +88,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-browserify'
     grunt.loadNpmTasks 'grunt-cordovacli'
 
-    grunt.registerTask 'build', ['coffeelint', 'clean', 'browserify', 'stylus', 'jade']
+    grunt.registerTask 'build', ['coffeelint', 'clean:dist', 'browserify', 'stylus', 'jade']
     grunt.registerTask 'minify', ['uglify', 'cssmin']
     grunt.registerTask 'dist', ['build', 'minify', 'copy']
     grunt.registerTask 'default', ['build', 'minify', 'copy', 'cordovacli']
