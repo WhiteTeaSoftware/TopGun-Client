@@ -1,5 +1,7 @@
 # TopGun-Client
 
+This was mainly a learning project, and many of the dependencies are out of date. It isn't being actively deveoped, altough I do work on it sometimes.
+
 A location based messaging service
 
 Note: this requires a TopGun-Server instance running!
